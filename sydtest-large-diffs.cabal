@@ -6,9 +6,6 @@ license-files: LICENSE
 author:        Casper Association
 maintainer:    morgan.a.s.thomas@gmail.com
 
-library
-  hs-source-dirs: src
-
 test-suite spec
   type: exitcode-stdio-1.0
   main-is: Spec.hs

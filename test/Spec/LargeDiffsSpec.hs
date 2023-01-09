@@ -8,6 +8,10 @@ import Test.Syd (Spec, describe, it, shouldBe)
 spec :: Spec
 spec =
   describe "large diffs" $ do
+    it "quickly processes a large true comparison" $
+      pack (replicate 100000 'a') `shouldBe`
+        pack (replicate 100000 'a')
+
     it "shows a large diff in a test failure (A)" $
       pack (replicate 20000 'a') `shouldBe` "B"
 

@@ -16,4 +16,6 @@ The test suite takes a long time to output a result and consumes a lot of memory
 
 **Notes**
 
-One can verify that the slowness is in the diffing by reducing the replication factors in `test/Spec/LargeDiffsSpec.hs`. Increasing the replication factors by a factor of two or more results in outrageous memory usage and runtime.
+Try reducing or increasing the replication factors in `test/Spec/LargeDiffsSpec.hs`. Increasing the replication factors by a factor of two or more results in outrageous memory usage and runtime.
+
+One can verify that the bottleneck is not in the building of the large `Text`s using `pack` and `replicate`, by commenting out the tests other than `quickly processes a large true comparison`, in which case the test suite should run very fast.
