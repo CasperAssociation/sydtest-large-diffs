@@ -27,13 +27,11 @@
           {
             overrides = hfinal: hprev:
               horizon-platform.packages.x86_64-linux // {
-                sydtest-large-diffs = dontCheck (disableLibraryProfiling (hprev.callCabal2nix "sydtest-large-diffs" ./. { }));
                 sydtest-large-diffs-spec = disableLibraryProfiling (hprev.callCabal2nix "osl:spec" ./. { });
               };
           };
     in
     {
-      packages.default = hsPkgs.sydtest-large-diffs;
       checks = { spec = hsPkgs.sydtest-large-diffs-spec; };
     });
 
