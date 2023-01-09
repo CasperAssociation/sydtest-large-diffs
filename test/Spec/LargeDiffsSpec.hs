@@ -9,7 +9,7 @@ spec :: Spec
 spec =
   describe "large diffs" $ do
     it "shows a large diff in a test failure (A)" $
-      pack (replicate 10000 'a') `shouldBe` "B"
+      pack (replicate 20000 'a') `shouldBe` "B"
 
     it "shows a large diff in a test failure (B)" $
-      "A" `shouldBe` pack (replicate 10000 'b')
+      "A" `shouldBe` pack (replicate 20000 'b')
