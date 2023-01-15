@@ -9,6 +9,9 @@
     horizon-platform = {
       url = "git+https://gitlab.homotopic.tech/horizon/horizon-platform";
     };
+    sydtest = {
+      url = "git+https://github.com/NorfairKing/sydtest?ref=faster-diffs";
+    };
   };
   outputs =
     inputs@
@@ -16,11 +19,12 @@
     , flake-utils
     , horizon-platform
     , nixpkgs
+    , sydtest
     , ...
     }:
     flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
     let
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs { inherit system; overlays = [sydtest.overlays.x86_64-linux]; };
       hsPkgs =
         with pkgs.haskell.lib;
         pkgs.haskell.packages.ghc942.override
