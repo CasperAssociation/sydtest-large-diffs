@@ -22,7 +22,7 @@
       pkgs = import nixpkgs { inherit system; };
       hsPkgs =
         with pkgs.haskell.lib;
-        pkgs.haskell.packages.ghc942.override
+        horizon-platform.legacyPackages.${system}.override
           {
             overrides = hfinal: hprev:
               {
