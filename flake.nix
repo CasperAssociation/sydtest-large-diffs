@@ -7,7 +7,10 @@
     };
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     horizon-platform = {
-      url = "git+https://github.com/morganthomas/horizon-platform?sydtest-diffs";
+      url = "git+https://gitlab.homotopic.tech/horizon/horizon-platform";
+    };
+    sydtest-src = {
+      url = "git+https://github.com/NorfairKing/sydtest";
     };
   };
   outputs =
@@ -16,6 +19,7 @@
     , flake-utils
     , horizon-platform
     , nixpkgs
+    , sydtest-src
     }:
     flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
     let
@@ -26,8 +30,8 @@
           {
             overrides = hfinal: hprev:
               {
-                sydtest-large-diffs-spec = disableLibraryProfiling (hprev.callCabal2nix "osl:spec" ./. {
-                });
+                sydtest-large-diffs-spec = disableLibraryProfiling (hprev.callCabal2nix "osl:spec" ./. {});
+                sydtest = hprev.callCabal2nix "sydtest" (inputs.sydtest-src + /sydtest) {};
               };
           };
     in
