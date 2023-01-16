@@ -31,7 +31,7 @@
             overrides = hfinal: hprev:
               {
                 sydtest-large-diffs-spec = disableLibraryProfiling (hprev.callCabal2nix "osl:spec" ./. {});
-                sydtest = hprev.callCabal2nix "sydtest" (inputs.sydtest-src + /sydtest) {};
+                sydtest = dontCheck (hprev.callCabal2nix "sydtest" (inputs.sydtest-src + /sydtest) {});
               };
           };
     in
