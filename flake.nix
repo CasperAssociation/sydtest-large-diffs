@@ -5,12 +5,17 @@
     flake-utils = {
       url = "github:numtide/flake-utils";
     };
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/22.11";
     horizon-platform = {
       url = "git+https://gitlab.homotopic.tech/horizon/horizon-platform";
     };
     sydtest-src = {
       url = "git+https://github.com/NorfairKing/sydtest";
+      flake = false;
+    };
+    safe-coloured-text-src = {
+      url = "git+https://github.com/NorfairKing/safe-coloured-text";
+      flake = false;
     };
   };
   outputs =
@@ -19,6 +24,7 @@
     , flake-utils
     , horizon-platform
     , nixpkgs
+    , safe-coloured-text-src
     , sydtest-src
     }:
     flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
@@ -26,12 +32,14 @@
       pkgs = import nixpkgs { inherit system; };
       hsPkgs =
         with pkgs.haskell.lib;
-        horizon-platform.legacyPackages.${system}.override
+        nixpkgs.legacyPackages.x86_64-linux.haskell.packages.ghc902.override
           {
             overrides = hfinal: hprev:
               {
                 sydtest-large-diffs-spec = disableLibraryProfiling (hprev.callCabal2nix "osl:spec" ./. {});
-                sydtest = dontCheck (hprev.callCabal2nix "sydtest" (inputs.sydtest-src + /sydtest) {});
+                sydtest = hprev.callCabal2nix "sydtest" (sydtest-src + /sydtest) { };
+                autodocodec-yaml = markUnbroken (hprev.callHackage "autodocodec-yaml" "0.2.0.2" { });
+                safe-coloured-text = hprev.callCabal2nix "safe-coloured-text" (safe-coloured-text-src + /safe-coloured-text) { };
               };
           };
     in
